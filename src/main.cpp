@@ -83,10 +83,10 @@ void loop()
   } */
   strip.show();
 
-  Serial.println(time.min % 5);
+/*   Serial.println(time.min % 5);
   Serial.print("Time: ");
   Serial.print(rtc.getTimeStr());
-  Serial.print("\r\n");
+  Serial.print("\r\n"); */
 
   delay(100);
 }

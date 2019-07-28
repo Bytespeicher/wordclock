@@ -212,7 +212,7 @@ void setHour(uint8_t minute, uint8_t hour) {
       case 11:
         printArray(ZWOELF, size(ZWOELF));
         break;
-      case 12:
+      case 0:
         if (minute >= 5) {
           printArray(EINS, size(EINS));
         } else {

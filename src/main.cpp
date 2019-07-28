@@ -119,7 +119,6 @@ void setMinute(uint8_t minute) {
     printArray(NACH, sizeof(NACH)/2);
   } else if (minute >= 15 && minute < 20) {
     printArray(VIERTEL, sizeof(VIERTEL)/2);
-    printArray(VOR, sizeof(VOR)/2);
   } else if (minute >= 20 && minute < 25) {
     printArray(ZWANZIG, sizeof(ZWANZIG)/2);
     printArray(NACH, sizeof(NACH)/2);

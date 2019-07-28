@@ -27,9 +27,6 @@ int size(T(&)[sz])
 void loop();
 void setup();
 
-
-void updateDisplay(uint8_t pixels[], uint32_t color, bool fade = false);
-
 void clearDisplay();
 void setDefault();
 void setMinute(uint8_t minute);

@@ -91,13 +91,6 @@ void loop()
   delay(100);
 }
 
-void updateDisplay(uint8_t pixels[], uint32_t color, bool fade) {
-  for (int idx=0; idx<NUMPIXELS; ++idx)
-  {
-    
-  }
-}
-
 void printArray( int arr[], int n) {
   for (auto i = 0; i < n; i++) {
     strip.setPixelColor(arr[i], defaultColor);

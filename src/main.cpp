@@ -19,11 +19,9 @@ void setup()
 
 ISR(PCINT2_vect)
 {
-  // process rotary encoder 
   char hourResult = hourRotary.process();
   char minuteResult = minuteRotary.process();
 
-  // If there is rotation update the hours and minutes corectly
   if (hourResult || minuteResult)
   {
     Time tm = rtc.getTime();
@@ -46,52 +44,31 @@ ISR(PCINT2_vect)
     }
 
 
-    //TODO: Remove Debug stuff
-    //char output[5];
-    //sprintf(output, "%02d:%02d", hour, minute);
-    //Serial.println(output);
-
     Serial.print("Time: ");
     Serial.print(rtc.getTimeStr());
     Serial.print("\r\n");
   }
 }
 
-
-  
-
-
 void loop()
 {
   Time time = rtc.getTime();
   
   clearDisplay();
+
   setDefault();
   setMinute(time.min);
   setHour(time.min, time.hour);
   setExtraMinutes(time.min % 5);
-/*   for (auto i = 0; i < (sizeof(ZWOELF)/2); i++) {
-    strip.setPixelColor(ZWOELF[i], defaultColor);
-  } */
 
-  //strip.fill(0, 11, strip.Color(255,255,255));
-  /* for(int i = 0; i<NUMPIXELS;i++) {
-    delay(50);
-    strip.setPixelColor(i-1, strip.Color(0,0,0));
-    strip.setPixelColor(i,  strip.Color(255,0,0));
   strip.show();
-  } */
-  strip.show();
-
-/*   Serial.println(time.min % 5);
-  Serial.print("Time: ");
-  Serial.print(rtc.getTimeStr());
-  Serial.print("\r\n"); */
 
   delay(100);
 }
 
 void printArray( int arr[], int n) {
+  
+
   for (auto i = 0; i < n; i++) {
     strip.setPixelColor(arr[i], defaultColor);
   }
@@ -112,42 +89,42 @@ void setDefault() {
 
 void setMinute(uint8_t minute) {
   if (minute >= 5 && minute < 10) {
-    printArray(MFUENF, sizeof(MFUENF)/2);
-    printArray(NACH, sizeof(NACH)/2);
+    printArray(MFUENF, size(MFUENF));
+    printArray(NACH, size(NACH));
   } else if (minute >= 10 && minute < 15) {
-    printArray(MZEHN, sizeof(MZEHN)/2);
-    printArray(NACH, sizeof(NACH)/2);
+    printArray(MZEHN, size(MZEHN));
+    printArray(NACH, size(NACH));
   } else if (minute >= 15 && minute < 20) {
-    printArray(VIERTEL, sizeof(VIERTEL)/2);
+    printArray(VIERTEL, size(VIERTEL));
   } else if (minute >= 20 && minute < 25) {
-    printArray(ZWANZIG, sizeof(ZWANZIG)/2);
-    printArray(NACH, sizeof(NACH)/2);
+    printArray(ZWANZIG, size(ZWANZIG));
+    printArray(NACH, size(NACH));
   } else if (minute >= 25 && minute < 30) {
-    printArray(MFUENF, sizeof(MFUENF)/2);
-    printArray(VOR, sizeof(VOR)/2);
-    printArray(HALB, sizeof(HALB)/2);
+    printArray(MFUENF, size(MFUENF));
+    printArray(VOR, size(VOR));
+    printArray(HALB, size(HALB));
   } else if (minute >= 30 && minute < 35) {
-    printArray(HALB, sizeof(HALB)/2);
+    printArray(HALB, size(HALB));
   } else if (minute >= 35 && minute < 40) {
-    printArray(MFUENF, sizeof(MFUENF)/2);
-    printArray(NACH, sizeof(NACH)/2);
-    printArray(HALB, sizeof(HALB)/2);
+    printArray(MFUENF, size(MFUENF));
+    printArray(NACH, size(NACH));
+    printArray(HALB, size(HALB));
   } else if (minute >= 40 && minute < 45) {
-    printArray(MZEHN, sizeof(MZEHN)/2);
-    printArray(NACH, sizeof(NACH)/2);
-    printArray(HALB, sizeof(HALB)/2);
+    printArray(MZEHN, size(MZEHN));
+    printArray(NACH, size(NACH));
+    printArray(HALB, size(HALB));
   } else if (minute >= 45 && minute < 50) {
-    printArray(DREIVIERTEL, sizeof(DREIVIERTEL)/2);
+    printArray(DREIVIERTEL, size(DREIVIERTEL));
   } else if (minute >= 50 && minute < 55) {
-    printArray(MZEHN, sizeof(MZEHN)/2);
-    printArray(VOR, sizeof(VOR)/2);
+    printArray(MZEHN, size(MZEHN));
+    printArray(VOR, size(VOR));
   } else if (minute >= 55 && minute < 60) {
-    printArray(MFUENF, sizeof(MFUENF)/2);
-    printArray(VOR, sizeof(VOR)/2);
+    printArray(MFUENF, size(MFUENF));
+    printArray(VOR, size(VOR));
   }
 
   if (minute < 5) {
-    printArray(UHR, sizeof(UHR)/2);
+    printArray(UHR, size(UHR));
   }
 }
 
@@ -160,86 +137,86 @@ void setHour(uint8_t minute, uint8_t hour) {
     switch(hour) {
       case 1:
         if (minute >= 5) {
-          printArray(EINS, sizeof(EINS)/2);
+          printArray(EINS, size(EINS));
         } else {
-          printArray(EIN, sizeof(EIN)/2);
+          printArray(EIN, size(EIN));
         }
         break;
       case 2:
-        printArray(ZWEI, sizeof(ZWEI)/2);
+        printArray(ZWEI, size(ZWEI));
         break;
       case 3:
-        printArray(DREI, sizeof(DREI)/2);
+        printArray(DREI, size(DREI));
         break;
       case 4:
-        printArray(VIER, sizeof(VIER)/2);
+        printArray(VIER, size(VIER));
         break;
       case 5:
-        printArray(FUENF, sizeof(FUENF)/2);
+        printArray(FUENF, size(FUENF));
         break;
       case 6:
-        printArray(SECHS, sizeof(SECHS)/2);
+        printArray(SECHS, size(SECHS));
         break;
       case 7:
-        printArray(SIEBEN, sizeof(SIEBEN)/2);
+        printArray(SIEBEN, size(SIEBEN));
         break;
       case 8:
-        printArray(ACHT, sizeof(ACHT)/2);
+        printArray(ACHT, size(ACHT));
         break;
       case 9:
-        printArray(NEUN, sizeof(NEUN)/2);
+        printArray(NEUN, size(NEUN));
         break;
       case 10:
-        printArray(ZEHN, sizeof(ZEHN)/2);
+        printArray(ZEHN, size(ZEHN));
         break;
       case 11:
-        printArray(ELF, sizeof(ELF)/2);
+        printArray(ELF, size(ELF));
         break;
       case 0:
-        printArray(ZWOELF, sizeof(ZWOELF)/2);
+        printArray(ZWOELF, size(ZWOELF));
         break;
     }
   } else {
 
     switch(hour) {
       case 1:
-        printArray(ZWEI, sizeof(ZWEI)/2);
+        printArray(ZWEI, size(ZWEI));
         break;
       case 2:
-        printArray(DREI, sizeof(DREI)/2);
+        printArray(DREI, size(DREI));
         break;
       case 3:
-        printArray(VIER, sizeof(VIER)/2);
+        printArray(VIER, size(VIER));
         break;
       case 4:
-        printArray(FUENF, sizeof(FUENF)/2);
+        printArray(FUENF, size(FUENF));
         break;
       case 5:
-        printArray(SECHS, sizeof(SECHS)/2);
+        printArray(SECHS, size(SECHS));
         break;
       case 6:
-        printArray(SIEBEN, sizeof(SIEBEN)/2);
+        printArray(SIEBEN, size(SIEBEN));
         break;
       case 7:
-        printArray(ACHT, sizeof(ACHT)/2);
+        printArray(ACHT, size(ACHT));
         break;
       case 8:
-        printArray(NEUN, sizeof(NEUN)/2);
+        printArray(NEUN, size(NEUN));
         break;
       case 9:
-        printArray(ZEHN, sizeof(ZEHN)/2);
+        printArray(ZEHN, size(ZEHN));
         break;
       case 10:
-        printArray(ELF, sizeof(ELF)/2);
+        printArray(ELF, size(ELF));
         break;
       case 11:
-        printArray(ZWOELF, sizeof(ZWOELF)/2);
+        printArray(ZWOELF, size(ZWOELF));
         break;
       case 12:
         if (minute >= 5) {
-          printArray(EINS, sizeof(EINS)/2);
+          printArray(EINS, size(EINS));
         } else {
-          printArray(EIN, sizeof(EIN)/2);
+          printArray(EIN, size(EIN));
         }
         break;
       

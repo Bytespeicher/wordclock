@@ -18,11 +18,11 @@ DS3231 rtc (SDA,SCL);
 Adafruit_NeoPixel strip = Adafruit_NeoPixel(NUMPIXELS, PIN, NEO_RGB + NEO_KHZ800);
 uint8_t currentPixels[NUMPIXELS];
 
-/* template<typename T, int sz>
+template<typename T, int sz>
 int size(T(&)[sz])
 {
     return sz;
-} */
+}
 
 void loop();
 void setup();

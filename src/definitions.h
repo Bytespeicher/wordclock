@@ -1,15 +1,15 @@
 #define EXTRA_MINUTE_PIXEL_START 110
 
-int DEFAULT_LIT_PIXEL[] = {109, 108, 106, 105, 104};
+int DEFAULT_LIT_PIXEL[] = {0, 1, 3, 4, 5};
 
-int MFUENF[] = {99, 100, 101, 102};
-int MZEHN[] = {88, 89, 90, 91};
-int FUENFZEHN[] = {88, 89, 90, 91, 99, 100, 101, 102};
-int ZWANZIG[] = {92, 93, 94, 95, 96, 97, 98};
+int MFUENF[] = {7, 8, 9, 10};
+int MZEHN[] = {18, 19, 20, 21};
+int FUENFZEHN[] = {7, 8, 9, 10, 18, 19, 20, 21};
+int ZWANZIG[] = {11, 12, 13, 14, 15, 16, 17};
 
-int VIERTEL[] = { 83, 82, 81, 80, 79, 78, 77};
-int HALB[] = {62, 63, 64, 65};
-int DREIVIERTEL[] = {87, 86, 85, 84, 83, 82, 81, 80, 79, 78, 77};
+int VIERTEL[] = { 27, 28, 29, 30, 31, 32, 33};
+int HALB[] = {44, 45, 46, 47};
+int DREIVIERTEL[] = {22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32};
 
 int NACH[] = {71, 70, 69, 68};
 int VOR[] = {74, 73, 72};

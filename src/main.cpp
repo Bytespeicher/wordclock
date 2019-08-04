@@ -5,70 +5,37 @@
 void setup()
 {
   strip.begin();
-  strip.setBrightness(255);
+  strip.setBrightness(20);
   strip.show();
 
-  Serial.begin(9600);
-  rtc.begin();
-
-  PCICR |= (1 << PCIE2) | (1 << PCIE1);
-  PCMSK2 |= (1 << PCINT18) | (1 << PCINT19) | (1 << PCINT20) | (1 << PCINT21);
-
-  sei();  
-}
-
-ISR(PCINT2_vect)
-{
-  char hourResult = hourRotary.process();
-  char minuteResult = minuteRotary.process();
-
-  if (hourResult || minuteResult)
-  {
-    Time tm = rtc.getTime();
-
-    if (hourResult == DIR_CW)
-    {
-      rtc.setTime(tm.hour == 23 ? 0 : tm.hour + 1, tm.min, tm.sec);
-    }
-    else if (hourResult == DIR_CCW)
-    {
-      rtc.setTime(tm.hour == 1 ? 23 : tm.hour - 1, tm.min, tm.sec);
-    }
-    else if (minuteResult == DIR_CW)
-    {
-      rtc.setTime(tm.hour, tm.min == 59 ? 0 : tm.min + 1, tm.sec);
-    }
-    else if (minuteResult == DIR_CCW)
-    {
-      rtc.setTime(tm.hour, tm.min == 0 ? 59 : tm.min - 1, tm.sec);
-    }
-
-
-    Serial.print("Time: ");
-    Serial.print(rtc.getTimeStr());
-    Serial.print("\r\n");
+  Wire.begin();
+  if (! rtc.begin()) {
+    Serial.println("Couldn't find RTC");
+    while (1);
   }
+  Serial.begin(9600);
+  rtc.adjust(DateTime(2019, 8, 5, 0, 8, 0));
 }
 
 void loop()
 {
-  Time time = rtc.getTime();
+  DateTime time = rtc.now();
   
+  char tbs[16];
+  sprintf(tbs, "%d:%d:%d", time.hour(), time.minute(), time.second());
+  Serial.println(tbs);
+
   clearDisplay();
-
   setDefault();
-  setMinute(time.min);
-  setHour(time.min, time.hour);
-  setExtraMinutes(time.min % 5);
-
+  //setMinute(time.minute());
+  //setHour(time.minute(), time.hour());
+  //setExtraMinutes(time.minute() % 5);
+  
   strip.show();
-
   delay(100);
 }
 
 void printArray( int arr[], int n) {
-  
-
   for (auto i = 0; i < n; i++) {
     strip.setPixelColor(arr[i], defaultColor);
   }
@@ -226,6 +193,6 @@ void setHour(uint8_t minute, uint8_t hour) {
 
 void setExtraMinutes(uint8_t mins) {
   for (int i = 0; i < 4; i++) {
-    strip.setPixelColor(EXTRA_MINUTE_PIXEL_START + i, mins > i ? defaultColor : offColor);
+    strip.setPixelColor(NUMPIXELS - i, mins > i ? defaultColor : offColor);
   }
 }

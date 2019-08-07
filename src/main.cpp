@@ -17,21 +17,21 @@ void setup()
   
   delay(1000);
   
-  WiFiManager wifiManager;
-  wifiManager.autoConnect("Wordclock by Till");
+  AsyncWebServer server(80);
+  DNSServer dns;
+  AsyncWiFiManager wifiManager(&server,&dns);
+
   WiFi.hostname("wordclock");
   
-  //wifiManager.resetSettings();
-  //return;
+  rtc->queryTime();
 
+  ota->checkForUpdate();
 }
 
 void loop()
 {
-  //rtc->Tick();
-  //Serial.println(rtc->gotTimeOnce());
   if (rtc->gotTimeOnce()) {
     display->setTime(rtc->getHours(), rtc->getMinutes());
-    display->render(15);
+    display->render(10);
   }
 }

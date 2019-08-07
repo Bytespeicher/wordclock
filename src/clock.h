@@ -1,5 +1,5 @@
 #include <Arduino.h>
-#include "Ticker.h"
+#include <Ticker.h>
 
 #include <NTPtimeESP.h>
 
@@ -14,6 +14,7 @@ class RTClock {
     uint8_t hours = 0;
     uint8_t minutes = 0;
     uint8_t seconds = 0;
+
     bool receivedTimeOnce = false;
 
     NTPtime * NTPch; 
@@ -35,5 +36,6 @@ class RTClock {
       return this->receivedTimeOnce;
     }
 
+    void queryTime();
     //void Tick();
 };

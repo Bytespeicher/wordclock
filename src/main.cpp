@@ -17,12 +17,23 @@ void setup()
   
   delay(1000);
   
+  Serial.println("Hotspot");
   AsyncWebServer server(80);
   DNSServer dns;
-  AsyncWiFiManager wifiManager(&server,&dns);
 
+  AsyncWiFiManager wifiManager(&server,&dns);
+  wifiManager.autoConnect("wordclock");
+  wifiManager.setDebugOutput(true);
+  
   WiFi.hostname("wordclock");
   
+  while ( WiFi.status() != WL_CONNECTED) {
+    delay(100);
+  }
+
+  webserver = new Webserver();
+
+  Serial.println("Query");
   rtc->queryTime();
 
   ota->checkForUpdate();

@@ -21,7 +21,7 @@ void RTClock::queryTime() {
 
     if(dateTime.valid){
       this->hours = dateTime.hour;
-      this->minutes = dateTime.minute;
+      this->minutes =  dateTime.minute;
       this->seconds = dateTime.second;
 
       this->receivedTimeOnce = true;

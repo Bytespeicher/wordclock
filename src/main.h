@@ -14,7 +14,7 @@
 Display * display = new Display();
 RTClock * rtc = new RTClock();
 OTAUpdate * ota = new OTAUpdate();
-Webserver * webserver = new Webserver();
+Webserver * webserver;
 
 void loop();
 void setup();

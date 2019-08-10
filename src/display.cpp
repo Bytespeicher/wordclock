@@ -90,14 +90,74 @@ void Display::render(uint8_t speed) {
 }
 
 void Display::setTime(uint8_t hour, uint8_t minute) {
+  bool nextHour = false;
+
+  // Es ist
   setDefault();
-  setMinute(minute);
+
+  // Stundendots
+  for (int i = 0; i < 4; i++) {
+    uint8_t b = (NUMPIXELS - 1) - i;
+    targetLeds[b] = (minute % 5) > i ? defaultColor : offColor;
+  }
+
+  if (minute >= 5 && minute < 10) {
+    printArray(MFUENF, size(MFUENF));
+    printArray(NACH, size(NACH));
+  } else if (minute >= 10 && minute < 15) {
+    printArray(MZEHN, size(MZEHN));
+    printArray(NACH, size(NACH));
+  } else if (minute >= 15 && minute < 20) {
+    printArray(VIERTEL, size(VIERTEL));
+    nextHour = true;
+  } else if (minute >= 20 && minute < 25) {
+    printArray(ZWANZIG, size(ZWANZIG));
+    printArray(NACH, size(NACH));
+  } else if (minute >= 25 && minute < 30) {
+    printArray(MFUENF, size(MFUENF));
+    printArray(VOR, size(VOR));
+    printArray(HALB, size(HALB));
+    nextHour = true;
+  } else if (minute >= 30 && minute < 35) {
+    printArray(HALB, size(HALB));
+    nextHour = true;
+  } else if (minute >= 35 && minute < 40) {
+    printArray(MFUENF, size(MFUENF));
+    printArray(NACH, size(NACH));
+    printArray(HALB, size(HALB));
+    nextHour = true;
+  } else if (minute >= 40 && minute < 45) {
+    printArray(MZEHN, size(MZEHN));
+    printArray(NACH, size(NACH));
+    printArray(HALB, size(HALB));
+    nextHour = true;
+  } else if (minute >= 45 && minute < 50) {
+    printArray(DREIVIERTEL, size(DREIVIERTEL));
+    nextHour = true;
+  } else if (minute >= 50 && minute < 55) {
+    printArray(MZEHN, size(MZEHN));
+    printArray(VOR, size(VOR));
+    nextHour = true;
+  } else if (minute >= 55 && minute < 60) {
+    printArray(MFUENF, size(MFUENF));
+    printArray(VOR, size(VOR));
+    nextHour = true;
+  }
+
+  if (minute < 5) {
+    printArray(UHR, size(UHR));
+  }
+
+  // Wir müssen aufgrund der Zeitansage die stunde um 1 anheben Halb 4 = 03:30
+  if (nextHour) {
+    hour++;
+  }
 
   if (hour >= 12) {
     hour -= 12;
   }
 
-  if (!(minute >= 15 && minute < 20) && !(minute >= 25 && minute < 50)) {
+  //if (!(minute >= 15 && minute < 20) && !(minute >= 25 && minute < 50)) {
 
 //  if ((minute < 15 || !(minute > 45 && minute < 50) || !(minute >= 50 && minute < 60))) {
     switch(hour) {
@@ -142,7 +202,7 @@ void Display::setTime(uint8_t hour, uint8_t minute) {
         printArray(ZWOELF, size(ZWOELF));
         break;
     }
-  } else {
+  /*}  else {
 
     switch(hour) {
       case 1:
@@ -186,5 +246,5 @@ void Display::setTime(uint8_t hour, uint8_t minute) {
         }
         break;
     }
-  }
+  } */
 }

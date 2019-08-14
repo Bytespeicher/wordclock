@@ -9,6 +9,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "parcel-plugin-inliner": "^1.0.10",
     "preact": "^10.0.0-rc.1"
   },
   "devDependencies": {

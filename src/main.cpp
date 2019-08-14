@@ -18,10 +18,10 @@ void setup()
   delay(1000);
   
   Serial.println("Hotspot");
-  AsyncWebServer server(80);
+  AsyncWebServer * captiveWebserver = new AsyncWebServer(80);
   DNSServer dns;
 
-  AsyncWiFiManager wifiManager(&server,&dns);
+  AsyncWiFiManager wifiManager(captiveWebserver,&dns);
   wifiManager.autoConnect("wordclock");
   wifiManager.setDebugOutput(true);
   
@@ -30,6 +30,7 @@ void setup()
   while ( WiFi.status() != WL_CONNECTED) {
     delay(100);
   }
+  delete captiveWebserver;
 
   webserver = new Webserver();
 
@@ -37,10 +38,13 @@ void setup()
   rtc->queryTime();
 
   ota->checkForUpdate();
+
+  
 }
 
 void loop()
 {
+
   if (rtc->gotTimeOnce()) {
     display->setTime(rtc->getHours(), rtc->getMinutes());
     display->render(10);

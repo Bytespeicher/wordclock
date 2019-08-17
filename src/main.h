@@ -1,6 +1,5 @@
 #include <Arduino.h>
 
-#include <Adafruit_NeoPixel.h>
 #include <Rotary.h>
 #include <DS3231.h>
 
@@ -11,7 +10,12 @@ Rotary minuteRotary = Rotary(4, 5);
 
 Display * display;
 
-DS3231 rtc (SDA,SCL);
+DS3231 * rtc;
+
+volatile int offsetMinute = 0;
+volatile int offsetHour = 0;
+
+void updateTime();
 
 void loop();
 void setup();

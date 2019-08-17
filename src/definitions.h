@@ -6,8 +6,9 @@
 #define PIN            6
 #define NUMPIXELS      114
 
-#define defaultColor CRGB::Red
+#define defaultColor CRGB::Olive
 #define offColor CRGB::Black
+#define brightness 160
 
 template<typename T, int sz>
 int size(T(&)[sz])

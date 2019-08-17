@@ -2,6 +2,7 @@
 
 Display::Display() {
   FastLED.addLeds<WS2812B, PIN, RGB>(currentLeds, NUMPIXELS).setCorrection(TypicalLEDStrip);
+  FastLED.setBrightness(brightness);
   FastLED.clear();
 };
 

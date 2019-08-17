@@ -66,6 +66,11 @@ void loop()
 
   display->setTime(time.hour, time.min);
   display->render(32);
-
+Serial.print(time.hour);
+Serial.print(":");
+Serial.print(time.min);
+Serial.print(":");
+Serial.print(time.sec);
+Serial.println("");
   updateTime();
 }

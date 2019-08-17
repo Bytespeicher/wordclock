@@ -5,6 +5,7 @@
 void setup()
 {
   Serial.begin(9600);
+  
 
   PCICR |= (1 << PCIE2) | (1 << PCIE1);
   PCMSK2 |= (1 << PCINT18) | (1 << PCINT19) | (1 << PCINT20) | (1 << PCINT21);
@@ -65,12 +66,15 @@ void loop()
   Time time = rtc->getTime();
 
   display->setTime(time.hour, time.min);
-  display->render(32);
-Serial.print(time.hour);
-Serial.print(":");
-Serial.print(time.min);
-Serial.print(":");
-Serial.print(time.sec);
-Serial.println("");
+  display->render(4);
+
+
+  Serial.print(time.hour);
+  Serial.print(":");
+  Serial.print(time.min);
+  Serial.print(":");
+  Serial.print(time.sec);
+  Serial.println("");
+
   updateTime();
 }

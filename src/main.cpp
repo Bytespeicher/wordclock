@@ -36,16 +36,12 @@ void setup()
 
   Serial.println("Query");
   rtc->queryTime();
-
-  ota->checkForUpdate();
-
-  
 }
 
 void loop()
 {
-
   if (rtc->gotTimeOnce()) {
+    webserver->loop();
     display->setTime(rtc->getHours(), rtc->getMinutes());
     display->render(10);
   }

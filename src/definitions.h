@@ -3,7 +3,10 @@
 #ifndef DEFINITIONS_H
 #define DEFINITIONS_H
 
-#define defaultColor CRGB::Orange
+#define MAJOR 0
+#define MINOR 1
+
+#define defaultColor CRGB::Red
 #define offColor CRGB::Black
 
 #define PIN            D4

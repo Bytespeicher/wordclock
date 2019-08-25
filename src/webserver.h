@@ -6,12 +6,18 @@
 #include <ESPAsyncTCP.h>
 #include <ArduinoJson.h>
 
+#include "definitions.h"
+
 class Webserver {
   private:
     AsyncWebServer * server = new AsyncWebServer(80);
-    AsyncWebSocket * ws = new AsyncWebSocket("/ws");
+    bool restartRequired = false;
 
   public:
     Webserver();
     ~Webserver();
+    void loop();
+    AsyncWebServer * getRawServer() {
+      return server;
+    }
 };

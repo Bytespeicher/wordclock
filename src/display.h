@@ -13,8 +13,6 @@ class Display {
     CRGB targetLeds[NUMPIXELS];
 
     void setDefault();
-    void setMinute(uint8_t minute);
-
   
   public:
     Display();

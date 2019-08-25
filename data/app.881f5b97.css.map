@@ -1,1 +1,0 @@
-{"version":3,"sources":["components\\button\\style.scss"],"names":[],"mappings":"AAAA,QACE,WAAA,CACA","file":"app.881f5b97.css","sourceRoot":"..\\src","sourcesContent":[".button {\r\n  border: none;\r\n  border-radius: 5px;\r\n}"]}

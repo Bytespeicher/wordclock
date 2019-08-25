@@ -14,6 +14,8 @@ class Display {
 
     void setDefault();
   
+    CRGB displayColor = defaultColor;
+    
   public:
     Display();
     ~Display();

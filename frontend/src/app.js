@@ -5,6 +5,7 @@ import Router, { Link } from 'preact-router';
 
 import IndexPage from './pages/index';
 import UpdatePage from './pages/update';
+import SettingsPage from './pages/settings';
 
 import Button from './components/button';
 import { getMaxListeners } from "cluster";
@@ -12,22 +13,38 @@ import { getMaxListeners } from "cluster";
 const App = () => {
   const [ counter, setCounter ] = useState(0);
   return (
-  <div>
-    <header className="sticky">
-      <a href="#" className="logo">Wordclock</a>
-      <a href="#" className="button">Einstellungen</a>
-      <a href="#" className="button">Update</a>
-      <button>Download</button>
-    </header>
-
-    <Router>
-      <IndexPage path="/" />
-      <UpdatePage path="/update" />
-    </Router>
-
-    <footer className="sticky">
-      <p>© 2019 Tillmann Hübner {<Link href="mailto:ruohki@gmail.com">{"ruohki@gmail.com"}</Link>}</p>
-    </footer>
+  <div className="container">
+    <div className="row">
+      <div class="col-md-2 hidden-sm" />
+      <div class="col-md-8 col-sm-12">
+        <header className="sticky">
+          <Link href="/" className="logo">Wordclock</Link>
+          <Link href="/settings" className="button">Einstellungen</Link>
+          <Link href="/update" className="button">Update</Link>
+        </header>
+      </div>
+      <div class="col-md-2 hidden-sm" />
+    </div>
+    <div className="row">
+      <div class="col-md-2 hidden-sm" />
+      <div class="col-md-8 col-sm-12">
+        <Router>
+          <IndexPage path="/" />
+          <UpdatePage path="/update" />
+          <SettingsPage path="/settings" />
+        </Router>
+      </div>
+      <div class="col-md-2 hidden-sm" />
+    </div>
+    <div className="row">
+      <div class="col-md-2 hidden-sm" />
+      <div class="col-md-8 col-sm-12">
+        <footer className="sticky">
+          <p>© 2019 Tillmann Hübner {<Link href="mailto:ruohki@gmail.com">{"ruohki@gmail.com"}</Link>}</p>
+        </footer>
+      </div>
+      <div class="col-md-2 hidden-sm" />
+    </div>
   </div>
 
   )

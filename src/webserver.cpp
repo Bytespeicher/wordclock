@@ -16,11 +16,61 @@ Webserver::Webserver()
     ESP.restart();
   });
 
+  server->on("/config", HTTP_GET, [&](AsyncWebServerRequest *request) {
+    AsyncWebServerResponse *response = request->beginResponse(SPIFFS, "/index.html");
+    
+    request->send(response);
+  });
   
-  server->on("/update", HTTP_POST, [&](AsyncWebServerRequest *request) {
+  server->on("/config", HTTP_POST, [&](AsyncWebServerRequest *request) {
+    if (request->hasArg("c") && request->hasArg("v")) {
+      String pC = request->arg("c");
+      String pV = request->arg("v");
+
+      auto configElement = pC;
+      auto configValue = pV;
+
+      if (configElement == "color") {
+        File file = SPIFFS.open("/" + configElement, "w");
+        Serial.println(configValue.toInt());
+        file.write(configValue.toInt());
+        file.close();
+      }
+    }
+    
+    AsyncWebServerResponse *response = request->beginResponse(200, "application/json", "{\"status\":true}");
+    request->send(response);
+  });
+
+
+  server->on("/update/ui", HTTP_POST, [&](AsyncWebServerRequest *request)  {
+    AsyncWebServerResponse *response = request->beginResponse((Update.hasError())?500:200, "application/json", (Update.hasError())?"{\"status\":false}":"{\"status\":true}");
+    response->addHeader("Connection", "close");
+    response->addHeader("Access-Control-Allow-Origin", "*");
+    request->send(response);
+  }, [](AsyncWebServerRequest *request, String filename, size_t index, uint8_t *data, size_t len, bool final) {
+
+    File file;
+    if(!index){
+      Serial.printf("UploadStart: %s\n", filename.c_str());
+      file = SPIFFS.open("/index.html", "w");
+    } else {
+      file = SPIFFS.open("/index.html", "a");
+    };
+
+    file.write(data, len);
+    
+    file.close();
+    if(final){
+      Serial.printf("UploadEnd: %s, %u B\n", filename.c_str(), index+len);
+    }
+
+  });
+
+  server->on("/update/firmware", HTTP_POST, [&](AsyncWebServerRequest *request) {
       // the request handler is triggered after the upload has finished... 
       // create the response, add header, and send response
-      AsyncWebServerResponse *response = request->beginResponse((Update.hasError())?500:200, "text/plain", (Update.hasError())?"{\"status\":false}":"{\"status\":true}");
+      AsyncWebServerResponse *response = request->beginResponse((Update.hasError())?500:200, "application/json", (Update.hasError())?"{\"status\":false}":"{\"status\":true}");
       response->addHeader("Connection", "close");
       response->addHeader("Access-Control-Allow-Origin", "*");
       request->send(response);
@@ -30,14 +80,10 @@ Webserver::Webserver()
     if (!index) {
       uint32_t maxSketchSpace = (ESP.getFreeSketchSpace() - 0x1000) & 0xFFFFF000;      
       if (!Update.begin(maxSketchSpace)){ // Start with max available size
-
-
           Update.printError(Serial);   
       }
       Update.runAsync(true); // Tell the updaterClass to run in async mode
     }
-
-    // Write chunked data to the free sketch space
     if (Update.write(data, len) != len) {
         Update.printError(Serial); 
     }
@@ -49,6 +95,11 @@ Webserver::Webserver()
     }
   });
 
+  server->on("*", HTTP_GET,  [&](AsyncWebServerRequest *request) {
+    AsyncWebServerResponse *response = request->beginResponse(SPIFFS, "/index.html");
+    response->addHeader("Content-Encoding", "gzip");
+    request->send(response);
+  });
 
   server->serveStatic("/", SPIFFS, "/").setDefaultFile("index.html");
 
@@ -113,20 +164,6 @@ Webserver::Webserver()
     }
 
     request->send(404);
-  });
-  server->onFileUpload([](AsyncWebServerRequest *request, const String &filename, size_t index, uint8_t *data, size_t len, bool final) {
-    if (!index)
-      Serial.printf("UploadStart: %s\n", filename.c_str());
-    Serial.printf("%s", (const char *)data);
-    if (final)
-      Serial.printf("UploadEnd: %s (%u)\n", filename.c_str(), index + len);
-  });
-  server->onRequestBody([](AsyncWebServerRequest *request, uint8_t *data, size_t len, size_t index, size_t total) {
-    if (!index)
-      Serial.printf("BodyStart: %u\n", total);
-    Serial.printf("%s", (const char *)data);
-    if (index + len == total)
-      Serial.printf("BodyEnd: %u\n", total);
   });
 
   DefaultHeaders::Instance().addHeader("Access-Control-Allow-Origin", "*");

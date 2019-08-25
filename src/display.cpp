@@ -1,8 +1,29 @@
 #include "display.h"
+#include "FS.h"
+
 
 Display::Display() {
   FastLED.addLeds<NEOPIXEL, PIN>(currentLeds, NUMPIXELS).setCorrection(TypicalLEDStrip);
   FastLED.clear();
+
+  Serial.println(SPIFFS.begin());
+  if (SPIFFS.exists("/color")) {
+    File colorConfig = SPIFFS.open("/color", "r");
+    uint8_t buffer[4];
+    uint32_t foo;
+    colorConfig.read(buffer, 4);
+
+    foo = (uint32_t) buffer[0] << 24;
+    foo |=  (uint32_t) buffer[1] << 16;
+    foo |= (uint32_t) buffer[2] << 8;
+    foo |= (uint32_t) buffer[3]; 
+
+    displayColor = foo;
+
+    Serial.println("Farbe:");
+    Serial.println(displayColor);
+    colorConfig.close();
+  }
 };
 
 Display::~Display() {
@@ -17,14 +38,14 @@ void Display::setDefault() {
 
   for (int i = 0; i < size(DEFAULT_LIT_PIXEL); i++) {
     uint8_t b = pgm_read_byte(DEFAULT_LIT_PIXEL + i);
-    targetLeds[b] = defaultColor;
+    targetLeds[b] = this->displayColor;
   }
 }
 
 void Display::printArray(const uint8_t * arr, int n) {
   for (auto i = 0; i < n; i++) {
     uint8_t b = pgm_read_byte(arr + i);
-    targetLeds[b] = defaultColor;
+    targetLeds[b] = this->displayColor;
   }
 }
 
@@ -52,8 +73,11 @@ void Display::setTime(uint8_t hour, uint8_t minute) {
   // Stundendots
   for (int i = 0; i < 4; i++) {
     uint8_t b = (NUMPIXELS - 1) - i;
-    targetLeds[b] = (minute % 5) > i ? defaultColor : offColor;
+    targetLeds[b] = (minute % 5) > i ? this->displayColor : offColor;
   }
+  
+
+
 
   if (minute >= 5 && minute < 10) {
     printArray(MFUENF, size(MFUENF));

@@ -7,11 +7,7 @@ import IndexPage from './pages/index';
 import UpdatePage from './pages/update';
 import SettingsPage from './pages/settings';
 
-import Button from './components/button';
-import { getMaxListeners } from "cluster";
-
 const App = () => {
-  const [ counter, setCounter ] = useState(0);
   return (
   <div className="container">
     <div className="row">
@@ -40,7 +36,7 @@ const App = () => {
       <div class="col-md-2 hidden-sm" />
       <div class="col-md-8 col-sm-12">
         <footer className="sticky">
-          <p>© 2019 Tillmann Hübner {<Link href="mailto:ruohki@gmail.com">{"ruohki@gmail.com"}</Link>}</p>
+          <p>© 2020 Tillmann Hübner {<Link href="mailto:ruohki@gmail.com">{"ruohki@gmail.com"}</Link>}</p>
         </footer>
       </div>
       <div class="col-md-2 hidden-sm" />

@@ -7,14 +7,17 @@
 #include <ArduinoJson.h>
 
 #include "definitions.h"
+#include "display.h"
 
 class Webserver {
   private:
     AsyncWebServer * server = new AsyncWebServer(80);
     bool restartRequired = false;
+    Display* display;
 
   public:
-    Webserver();
+    Webserver(Display* display);
+
     ~Webserver();
     void loop();
     AsyncWebServer * getRawServer() {

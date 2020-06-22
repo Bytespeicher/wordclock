@@ -1,11 +1,11 @@
 import { h } from "preact";
-import { useState } from 'preact/hooks';
+import { useState, useRef } from 'preact/hooks';
 
 import './style.scss';
 
 
 const FilePicker = ({ onChange = () => true, onUpload = () => true, accept="*.*", noFile = "Bitte wählen sie eine Datei aus!", ...rest }) => {
-  const [ fileUpload, setFileUpload ] = useState();
+  const fileUpload = useRef();
   const [ selectedFile, setSelectedFile ] = useState();
   
   const clearFile = () => {
@@ -26,12 +26,12 @@ const FilePicker = ({ onChange = () => true, onUpload = () => true, accept="*.*"
     <div className="row">
       <div className="col-sm-12">
         <div className="filecontainer" >
-          <button className="small" onClick={() => fileUpload.click()} {...rest}>Auswählen...</button>
+          <button className="small" onClick={() => fileUpload.current.click()} {...rest}>Auswählen...</button>
           {selectedFile && <button className="small" onClick={() => onUpload(clearFile)} {...rest}>Hochladen</button>}
           <p className="vertical">{selectedFile ? selectedFile.name : noFile}</p>
         </div>
       </div>
-      <input type="file" accept={accept} className="picker" onChange={selectFile} ref={(el) => setFileUpload(el) }/>
+      <input type="file" accept={accept} className="picker" onChange={selectFile} ref={fileUpload} />
 
     </div>
   );

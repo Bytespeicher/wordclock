@@ -1,14 +1,50 @@
 #include "webserver.h"
+#include "settings.h"
 #include "stdlib_noniso.h"
 
-Webserver::Webserver()
+Webserver::Webserver(Display* display)
 {
+  this->display = display;
+
   MDNS.addService("http", "tcp", 80);
 
   SPIFFS.begin();
 
   server->on("/heap", HTTP_GET, [](AsyncWebServerRequest *request) {
     request->send(200, "text/plain", String(ESP.getFreeHeap()));
+  });
+
+  server->on("/color", HTTP_GET, [](AsyncWebServerRequest *request) {
+    Settings* set = new Settings();
+    
+    request->send(200, "application/json",
+      "{\"brightness\":" + String(set->Brightness()) +
+      ",\"r\":" + String(set->Red()) +
+      ",\"g\":" + String(set->Green()) +
+      ",\"b\":" + String(set->Blue()) +
+      "}"
+    );
+  });
+
+  server->on("/color", HTTP_POST, [&](AsyncWebServerRequest *request) {
+    if (request->hasArg("bri") && request->hasArg("r") && request->hasArg("g") && request->hasArg("b")) {
+      String pBri = request->arg("bri");
+      String pR = request->arg("r");
+      String pG = request->arg("g");
+      String pB = request->arg("b");
+      
+      Settings* set = new Settings();
+      set->UpdateBrightness(pBri.toInt());
+      set->UpdateColor(pR.toInt(), pG.toInt(), pB.toInt());
+
+      this->display->reloadSettings();
+      Serial.println("Setting color: r:" + pR + " g: " + pG + " b: " + pB + " brightness: " + pBri);
+      AsyncWebServerResponse *response = request->beginResponse(200, "application/json", "{\"status\":true}");
+      request->send(response);
+    } else {
+      AsyncWebServerResponse *response = request->beginResponse(500, "application/json", "{\"status\":false}");
+      request->send(response);
+    }
   });
 
   server->on("/restart", HTTP_GET, [](AsyncWebServerRequest *request) {

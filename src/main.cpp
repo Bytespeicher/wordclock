@@ -10,7 +10,9 @@ void setup()
   wifi_set_sleep_type(LIGHT_SLEEP_T);
   
   Serial.begin(9600);
+  EEPROM.begin(128);
   
+  display->reloadSettings();
   display->printArray(WELCOME, size(WELCOME));
   display->instantCommitChanges();
   
@@ -32,7 +34,7 @@ void setup()
   }
   delete captiveWebserver;
 
-  webserver = new Webserver();
+  webserver = new Webserver(display);
 
   Serial.println("Query");
   rtc->queryTime();

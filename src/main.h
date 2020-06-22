@@ -4,6 +4,7 @@
 #include <ESP8266WiFi.h>
 #include <ESPAsyncWebServer.h>
 #include <ESPAsyncWiFiManager.h> 
+#include <EEPROM.h>
 
 #include "definitions.h"
 #include "display.h"

@@ -1,6 +1,5 @@
 import { h  } from "preact";
 import { useState } from 'preact/hooks';
-import {Link} from 'preact-router'
 import axios from 'axios';
 
 import FilePicker from '../components/filepicker';

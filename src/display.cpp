@@ -5,31 +5,18 @@
 Display::Display() {
   FastLED.addLeds<NEOPIXEL, PIN>(currentLeds, NUMPIXELS).setCorrection(TypicalLEDStrip);
   FastLED.clear();
-
-  Serial.println(SPIFFS.begin());
-  if (SPIFFS.exists("/color")) {
-    File colorConfig = SPIFFS.open("/color", "r");
-    uint8_t buffer[4];
-    uint32_t foo;
-    colorConfig.read(buffer, 4);
-
-    foo = (uint32_t) buffer[0] << 24;
-    foo |=  (uint32_t) buffer[1] << 16;
-    foo |= (uint32_t) buffer[2] << 8;
-    foo |= (uint32_t) buffer[3]; 
-
-    displayColor = foo;
-
-    Serial.println("Farbe:");
-    Serial.println(displayColor);
-    colorConfig.close();
-  }
 };
 
 Display::~Display() {
   FastLED.clear();
 }
 
+void Display::reloadSettings() {
+  Settings* set = new Settings();
+  this->displayColor = CRGB(set->Red(), set->Green(), set->Blue());
+  Serial.println("Updating color: r:" + String(set->Red()) + " g: " + String(set->Green()) + " b: " + String(set->Blue()) + " brightness: " + String(set->Brightness()));
+  FastLED.setBrightness(set->Brightness());
+}
 
 void Display::setDefault() {
   for (auto i = 0; i < NUMPIXELS; i++) {
